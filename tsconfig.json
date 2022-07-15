@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
+    "strict": true,
     "outDir": "public/scripts",
-    "target": "es2015",
-    "module": "es2015",
-    "moduleResolution": "node"
+    "target": "ES2015",
+    "module": "ES2015",
+    "moduleResolution": "node",
+    "esModuleInterop": true
   },
   "files": [
     "src/index.ts"

@@ -1,22 +1,42 @@
-import { Book } from './book.js'
-import { books } from './book-collection.js'
+import { Book } from './entities/Book.js';
+import { Notepad } from './entities/Notepad.js';
+import { IBook } from './types/Book.js'
 
-function findSuitableBook (genre: string, pagesLimit: number, multipleRecommendations = true): Book | Book[] {
-  const findAlgorithm = (book: Book) => {
-    return book.genre === genre && book.pagesAmount <= pagesLimit
+const showData = (entity: unknown): void => {
+  if (entity instanceof Book) {
+    console.log(`Книга - ${entity.title} - ${entity.author} - ${getPrice(entity)}`)
+  } else if (entity instanceof Notepad) {
+    console.log(`Блокнот - ${entity.title} - ${getPrice(entity)}`)
   }
+};
 
-  if (multipleRecommendations) {
-    return books.filter(findAlgorithm)
-  } else {
-    return books.find(findAlgorithm)
-  }
+const getPrice = (entity: Book | Notepad): string => {
+  return entity.price ? entity.price.toString() : 'не продается'
 }
 
-const recommendedBook = findSuitableBook('fantasy', 1000)
+const main = () => {
+  const book: IBook = {
+    author: {
+      name: 'dfsdsv',
+      age: 32
+    },
+    title: 'ssdf',
+    price: 5
 
-if (recommendedBook instanceof Book) {
-  console.log(recommendedBook.name)
-} else {
-  console.log(recommendedBook[0].name)
+  }
+
+  const books = [
+    new Book('title 1', 'author 1', 'fantasy', 5),
+    new Book('title 1', 'author 2', 'others'),
+  ];
+
+  const notepads = [
+    new Notepad('title 1', 5),
+    new Notepad('title 1'),
+  ];
+
+  books.forEach((book) => showData(book));
+  notepads.forEach((notepad) => showData(notepad));
 }
+
+main();
