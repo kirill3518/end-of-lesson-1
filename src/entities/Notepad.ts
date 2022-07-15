@@ -1,15 +1,12 @@
 import { Product } from './Product.js'
 
-export class Notepad extends Product {
-  title: string;
+enum Type {
+  BLACK,
+  RED
+}
 
+export class Notepad extends Product<Type> {
   constructor(title: string, price?: number) {
-    super();
-    this.title = title;
-    this.price = price;
-  }
-
-  canBay(): boolean {
-    return typeof this.price === 'number'
+    super(title, 1, Type.RED, price);
   }
 }
