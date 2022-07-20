@@ -1,28 +1,10 @@
 import { Book } from './entities/Book.js';
 import { Notepad } from './entities/Notepad.js';
 import { Product } from './entities/Product.js';
-import { MyMap } from './common/MyMap.js'
+import { IBook, IOptions, search } from 'google-books-search';
+import { MyMap } from './common/MyMap.js';
 
-const showData = (entity: unknown): void => {
-  if (entity instanceof Book) {
-    console.log(`Книга - ${entity.title} - ${entity.author} - ${getPrice(entity)}`)
-  } else if (entity instanceof Notepad) {
-    console.log(`Блокнот - ${entity.title} - ${getPrice(entity)}`)
-  }
-};
-
-const getPrice = (entity: Book | Notepad): string => {
-  return entity.price ? entity.price.toString() : 'не продается'
-}
-
-const getFrom = <T extends Product<any>>(
-  obj: Record<string, T>,
-  title: string
-): T | undefined => {
-  return obj[title];
-}
-
-const main = () => {
+const main2 = () => {
   const map = new MyMap<string, Product>();
   console.log(1, map.getAll());
 
@@ -38,27 +20,47 @@ const main = () => {
   map.set('title 2', new Notepad('title 2'));
   console.log(5, map.getAll());
 
-  map.clear();
-  console.log(6, map.getAll());
+  // map.clear();
+  // console.log(6, map.getAll());
 
-  //const books = [
-  //    new Book("title 1", "author 1", "fantasy", 5),
-  //    new Book("title 1", "author 2", "others"),
-  //];
+  const o = map.getAll();
+  for (const key in o) {
+    console.log(key, ':', o[key]);
+    o[key].showData();
+  }
 
-  //const notepads = [
-  //    new Notepad("title 1", 5),
-  //    new Notepad("title 1"),
-  //];
+}
 
-  //books.forEach((book) => showData(book));
-  //notepads.forEach((notepad) => showData(notepad));
+main2();
+
+const basket = new MyMap<string, Product>();
+const addToBasket = (item: Product, count: number) => {
+  item.Buy(count);
+  basket.set('basket', item);
+}
+
+const book = new Book('book 1', 'author 1', 'fantasy', 5);
+addToBasket(book, 2);
+const notepad = new Notepad('notepad 1');
+addToBasket(notepad, 3);
+
+const searchBooks = (query: string, options: IOptions = {}): Promise<IBook[]> =>
+  new Promise((resolve, reject) => {
+    search(query, options, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    })
+  })
+
+const main = async () => {
+  const books = await searchBooks('Harry Poter', {
+    limit: 1,
+  });
 }
 
 main();
-
-const get = <T = any, V = any>(some: T, value: V): T => {
-  return some;
-}
 
 
