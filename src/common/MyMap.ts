@@ -29,4 +29,14 @@ export class MyMap<K extends string | number | symbol = string, V = any> {
     this.data = {} as Record<K, V>;
   }
 
+  getFrom(key: K): V | undefined {
+    return this.get(key);
+  }
+
+  setAll(objects: Record<K, V>): void {
+    for (const key in objects) {
+      this.set(key, objects[key]);
+    }
+  }
+
 }

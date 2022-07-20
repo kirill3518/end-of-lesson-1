@@ -6,8 +6,8 @@ enum Type {
 }
 
 export class Notepad extends Product<Type> {
-  constructor(title: string, price?: number) {
-    super(title, 1, Type.RED, price);
+  constructor(title: string, price?: number, type: Type = Type.RED) {
+    super(title, 1, type, price);
   }
 
   showData(): void {

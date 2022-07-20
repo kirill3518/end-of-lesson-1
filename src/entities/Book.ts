@@ -10,8 +10,8 @@ export class Book extends Product<Type> {
   author: string;
   genre: Genre;
 
-  constructor(title: string, author: string, genre: Genre, price?: number) {
-    super(title, 1, Type.OLD, price);
+  constructor(title: string, author: string, genre: Genre, price?: number, type: Type = Type.OLD) {
+    super(title, 1, type, price);
 
     this.author = author;
     this.genre = genre;
