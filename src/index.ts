@@ -1,22 +1,64 @@
-import { Book } from './book.js'
-import { books } from './book-collection.js'
+import { Book } from './entities/Book.js';
+import { Notepad } from './entities/Notepad.js';
+import { Product } from './entities/Product.js';
+import { MyMap } from './common/MyMap.js'
 
-function findSuitableBook (genre: string, pagesLimit: number, multipleRecommendations = true): Book | Book[] {
-  const findAlgorithm = (book: Book) => {
-    return book.genre === genre && book.pagesAmount <= pagesLimit
+const showData = (entity: unknown): void => {
+  if (entity instanceof Book) {
+    console.log(`Книга - ${entity.title} - ${entity.author} - ${getPrice(entity)}`)
+  } else if (entity instanceof Notepad) {
+    console.log(`Блокнот - ${entity.title} - ${getPrice(entity)}`)
   }
+};
 
-  if (multipleRecommendations) {
-    return books.filter(findAlgorithm)
-  } else {
-    return books.find(findAlgorithm)
-  }
+const getPrice = (entity: Book | Notepad): string => {
+  return entity.price ? entity.price.toString() : 'не продается'
 }
 
-const recommendedBook = findSuitableBook('fantasy', 1000)
-
-if (recommendedBook instanceof Book) {
-  console.log(recommendedBook.name)
-} else {
-  console.log(recommendedBook[0].name)
+const getFrom = <T extends Product<any>>(
+  obj: Record<string, T>,
+  title: string
+): T | undefined => {
+  return obj[title];
 }
+
+const main = () => {
+  const map = new MyMap<string, Product>();
+  console.log(1, map.getAll());
+
+  map.set('title 1', new Book('title 1', 'author 1', 'fantasy', 5));
+  console.log(2, map.getAll());
+
+  map.set('title 2', new Notepad('title 2'));
+  console.log(3, map.getAll());
+
+  map.remove('title 2');
+  console.log(4, map.getAll());
+
+  map.set('title 2', new Notepad('title 2'));
+  console.log(5, map.getAll());
+
+  map.clear();
+  console.log(6, map.getAll());
+
+  //const books = [
+  //    new Book("title 1", "author 1", "fantasy", 5),
+  //    new Book("title 1", "author 2", "others"),
+  //];
+
+  //const notepads = [
+  //    new Notepad("title 1", 5),
+  //    new Notepad("title 1"),
+  //];
+
+  //books.forEach((book) => showData(book));
+  //notepads.forEach((notepad) => showData(notepad));
+}
+
+main();
+
+const get = <T = any, V = any>(some: T, value: V): T => {
+  return some;
+}
+
+
