@@ -1,7 +1,7 @@
 import { Product } from './Product.js'
 import { Genre } from '../types/Genre.js'
 
-enum Type {
+export enum Type {
   NEW,
   OLD
 }

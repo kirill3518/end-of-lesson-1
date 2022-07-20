@@ -1,20 +1,10 @@
 import { Book } from './entities/Book.js';
 import { Notepad } from './entities/Notepad.js';
 import { Product } from './entities/Product.js';
-import { MyMap } from './common/MyMap.js'
+import { IBook, IOptions, search } from 'google-books-search';
+import { MyMap } from './common/MyMap.js';
 
-const getPrice = (entity: Book | Notepad): string => {
-  return entity.price ? entity.price.toString() : 'не продается'
-}
-
-const getFrom = <T extends Product<any>>(
-  obj: Record<string, T>,
-  title: string
-): T | undefined => {
-  return obj[title];
-}
-
-const main = () => {
+const main2 = () => {
   const map = new MyMap<string, Product>();
   console.log(1, map.getAll());
 
@@ -39,20 +29,38 @@ const main = () => {
     o[key].showData();
   }
 
-  const basket = new MyMap<string, Product>();
-  const book = new Book('book 1', 'author 1', 'fantasy', 5);
-  book.Buy(3);
-  map.set('basket 1', book);
-  const notepad = new Notepad('notepad 1');
-  notepad.Buy(2);
-  map.set('basket 2', notepad);
+}
 
+main2();
+
+const basket = new MyMap<string, Product>();
+const addToBasket = (item: Product, count: number) => {
+  item.Buy(count);
+  basket.set('basket', item);
+}
+
+const book = new Book('book 1', 'author 1', 'fantasy', 5);
+addToBasket(book, 2);
+const notepad = new Notepad('notepad 1');
+addToBasket(notepad, 3);
+
+const searchBooks = (query: string, options: IOptions = {}): Promise<IBook[]> =>
+  new Promise((resolve, reject) => {
+    search(query, options, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    })
+  })
+
+const main = async () => {
+  const books = await searchBooks('Harry Poter', {
+    limit: 1,
+  });
 }
 
 main();
-
-const get = <T = any, V = any>(some: T, value: V): T => {
-  return some;
-}
 
 

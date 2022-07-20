@@ -1,6 +1,6 @@
 import { Product } from './Product.js'
 
-enum Type {
+export enum Type {
   BLACK,
   RED
 }
