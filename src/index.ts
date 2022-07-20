@@ -3,14 +3,6 @@ import { Notepad } from './entities/Notepad.js';
 import { Product } from './entities/Product.js';
 import { MyMap } from './common/MyMap.js'
 
-const showData = (entity: unknown): void => {
-  if (entity instanceof Book) {
-    console.log(`Книга - ${entity.title} - ${entity.author} - ${getPrice(entity)}`)
-  } else if (entity instanceof Notepad) {
-    console.log(`Блокнот - ${entity.title} - ${getPrice(entity)}`)
-  }
-};
-
 const getPrice = (entity: Book | Notepad): string => {
   return entity.price ? entity.price.toString() : 'не продается'
 }
@@ -38,21 +30,23 @@ const main = () => {
   map.set('title 2', new Notepad('title 2'));
   console.log(5, map.getAll());
 
-  map.clear();
-  console.log(6, map.getAll());
+  // map.clear();
+  // console.log(6, map.getAll());
 
-  //const books = [
-  //    new Book("title 1", "author 1", "fantasy", 5),
-  //    new Book("title 1", "author 2", "others"),
-  //];
+  const o = map.getAll();
+  for (const key in o) {
+    console.log(key, ':', o[key]);
+    o[key].showData();
+  }
 
-  //const notepads = [
-  //    new Notepad("title 1", 5),
-  //    new Notepad("title 1"),
-  //];
+  const basket = new MyMap<string, Product>();
+  const book = new Book('book 1', 'author 1', 'fantasy', 5);
+  book.Buy(3);
+  map.set('basket 1', book);
+  const notepad = new Notepad('notepad 1');
+  notepad.Buy(2);
+  map.set('basket 2', notepad);
 
-  //books.forEach((book) => showData(book));
-  //notepads.forEach((notepad) => showData(notepad));
 }
 
 main();
