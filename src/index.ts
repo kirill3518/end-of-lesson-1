@@ -1,7 +1,8 @@
 import { Book } from './entities/Book.js';
 import { Notepad } from './entities/Notepad.js';
+import { Logger } from './common/Logger.js';
 import { Product } from './entities/Product.js';
-import { IBook, IOptions, search } from 'google-books-search';
+// import { IBook, IOptions, search } from 'google-books-search';
 import { MyMap } from './common/MyMap.js';
 
 const main2 = () => {
@@ -27,8 +28,8 @@ const main2 = () => {
   for (const key in o) {
     console.log(key, ':', o[key]);
     o[key].showData();
-  }
 
+  }
 }
 
 main2();
@@ -44,23 +45,43 @@ addToBasket(book, 2);
 const notepad = new Notepad('notepad 1');
 addToBasket(notepad, 3);
 
-const searchBooks = (query: string, options: IOptions = {}): Promise<IBook[]> =>
-  new Promise((resolve, reject) => {
-    search(query, options, (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
-      }
-    })
-  })
+// const searchBooks = (query: string, options: IOptions = {}): Promise<IBook[]> =>
+//   new Promise((resolve, reject) => {
+//     search(query, options, (error, result) => {
+//       if (error) {
+//         reject(error);
+//       } else {
+//         resolve(result);
+//       }
+//     })
+//   })
 
-const main = async () => {
-  const books = await searchBooks('Harry Poter', {
-    limit: 1,
+// const main = async () => {
+//   const books = await searchBooks('Harry Poter', {
+//     limit: 1,
+//   });
+// }
+
+const main = () => {
+  const book = new Book('title 1', 'author 1', 'fantasy', 5);
+
+  book.addReview({
+    author: 'andrey',
+    text: 'text',
+    score: 4
   });
-}
+
+  book.addReview({
+    author: 'andrey',
+    text: 'text',
+    score: 1
+  });
+
+  Product.getInfo(book);
+
+  Logger.info(book.reviews);
+  Logger.error('some error');
+};
+
 
 main();
-
-

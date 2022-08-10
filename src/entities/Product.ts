@@ -1,11 +1,16 @@
 import { IProduct } from '../types/Product.js'
+import { Review } from '../types/Review';
 
-export class Product<T = any> implements IProduct<T> {
-  title: string;
-  amount: number;
-  price?: number;
-  type: T;
-  count: number;
+export class Product<T = any> {
+  public title: string;
+  public amount: number;
+  public type: T;
+  public count: number;
+
+  protected price?: number;
+
+  private _reviews: Review[] = [];
+  private _score = 0;
 
   constructor(title: string, amount: number, type: T, price?: number) {
     this.title = title;
@@ -15,16 +20,23 @@ export class Product<T = any> implements IProduct<T> {
     this.count = 0;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  get score() {
+    return this._score;
+  }
+
+  get reviews(): Readonly<Review[]> {
+    return this._reviews;
+  }
+
   getPrice(): number | undefined {
     return this.price;
   }
-
-  canBuy(): boolean {
-    return typeof this.price === 'number';
-  }
-
   getAmount(): number {
     return this.amount;
+  }
+  canBuy(): boolean {
+    return typeof this.price === 'number';
   }
 
   showData(): void {
@@ -33,6 +45,18 @@ export class Product<T = any> implements IProduct<T> {
 
   Buy(count: number) {
     this.count += count;
+  }
+
+  addReview(review: Review) {
+    this._reviews.push(review);
+    this._score = this._reviews.reduce<number>((score, review) => {
+      return score + review.score;
+    }, 0) / this._reviews.length;
+  }
+
+  static getInfo(product: Product) {
+    console.log('getInfo Product');
+    console.log(product.title, product.amount);
   }
 
 }
