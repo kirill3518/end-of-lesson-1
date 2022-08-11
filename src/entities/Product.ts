@@ -4,9 +4,9 @@ import { Review } from '../types/Review';
 export class Product<T = any> {
   public title: string;
   public amount: number;
-  public type: T;
   public count: number;
 
+  protected _type: T;
   protected price?: number;
 
   private _reviews: Review[] = [];
@@ -15,18 +15,21 @@ export class Product<T = any> {
   constructor(title: string, amount: number, type: T, price?: number) {
     this.title = title;
     this.amount = amount;
-    this.type = type;
+    this._type = type;
     this.price = price;
     this.count = 0;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   get score() {
     return this._score;
   }
 
   get reviews(): Readonly<Review[]> {
     return this._reviews;
+  }
+
+  get type(): T {
+    return this._type;
   }
 
   getPrice(): number | undefined {

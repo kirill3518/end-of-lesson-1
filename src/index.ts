@@ -1,4 +1,4 @@
-import { Book } from './entities/Book.js';
+import { Book, Type } from './entities/Book.js';
 import { Notepad } from './entities/Notepad.js';
 import { Logger } from './common/Logger.js';
 import { Product } from './entities/Product.js';
@@ -80,8 +80,8 @@ const main = () => {
   Product.getInfo(book);
 
   Logger.info(book.reviews);
+  Logger.info(Type[book.type]);
   Logger.error('some error');
 };
-
 
 main();
