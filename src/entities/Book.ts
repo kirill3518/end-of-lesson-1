@@ -21,4 +21,9 @@ export class Book extends Product<Type> {
     console.log(`Книга - ${this.title} - ${this.author} - ${this.price}`);
   }
 
+  getInfo() {
+    console.log('getInfo Book');
+    console.log(this.title, this.price);
+  }
+
 }
