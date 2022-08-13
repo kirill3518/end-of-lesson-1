@@ -24,10 +24,10 @@ const main2 = () => {
   // map.clear();
   // console.log(6, map.getAll());
 
-  const o = map.getAll();
+  const o: Record<string, Product<any>> = map.getAll();
   for (const key in o) {
     console.log(key, ':', o[key]);
-    o[key].showData();
+    o[key]?.showData();
 
   }
 }
